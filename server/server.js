@@ -1,6 +1,8 @@
 require('./config/config.js');
+
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 
@@ -10,39 +12,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 //parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', (req, res) => {
-    res.json('getUsuario');
-});
 
-app.post('/usuario', (req, res) => {
-    let body = req.body;
+app.use(require('./routes/usuario'));
 
-    if (body.nombre === undefined) {
-        res.status(400).json({ //no lleva nombre
-            ok: false,
-            mensaje: "el nombre es requerido"
-        })
-    } else {
-        res.json({
-            persona: body //si existe
-        })
 
-    }
-    res.json({
-        persona: body
-    })
-    res.json('Hellosss');
-});
+//Coneccion a la BD
+mongoose.connect(process.env.URLDB, (err, res) => {
+    if (err) throw err;
 
-app.put('/usuario/:id', (req, res) => {
-    let id = req.params.id;
-    res.json({
-        id
-    })
-});
-
-app.delete('/usuario', (req, res) => {
-    res.json('Hellosss');
+    console.log('BD en linea');
 });
 
 app.listen(process.env.PORT, () => {
