@@ -7,8 +7,6 @@ const { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticac
 
 app.get('/usuario', verificaToken, (req, res) => {
 
-
-
     let desde = req.query.desde || 0;
     desde = Number(desde);
 
